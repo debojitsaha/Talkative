@@ -6,8 +6,11 @@ import {
   InputGroup,
   InputRightElement,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
@@ -16,10 +19,119 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
   const [pic, setPic] = useState("");
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const history = useHistory();
 
   const handleShow = () => setShow(!show);
-  const postDetails = () => {};
-  const submitHandler = () => {};
+
+  const postDetails = (pics) => {
+    setLoading(true);
+    if (pics === undefined) {
+      toast({
+        title: "Please select an image",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "talkative");
+      data.append("cloud_name", "debojitsaha");
+      fetch("https://api.cloudinary.com/v1_1/debojitsaha/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setPic(data.url.toString());
+          console.log(data.url.toString());
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      toast({
+        title: "Please select an image",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+      return;
+    }
+  };
+
+  const submitHandler = async () => {
+    setLoading(true);
+    if (!name || !email || !password || !confirmpassword) {
+      toast({
+        title: "Please fill all the fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (password !== confirmpassword) {
+      toast({
+        title: "Passwords do not match",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // const config = {
+      //   headers: {
+      //     "Content-type": "application/json",
+      //   },
+      // };
+
+      const { data } = await axios.post(
+        "/api/user",
+        { name, email, password, pic }
+      );
+
+      toast({
+        title: "Registration Successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setLoading(false);
+      history.push("/chats");
+    } catch (error) {
+      toast({
+        title: "Error Occured",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false)
+    }
+  };
 
   return (
     <VStack spacing="5x">
@@ -65,7 +177,6 @@ const Signup = () => {
             onChange={(e) => setConfirmpassword(e.target.value)}
           />
           <InputRightElement width="4.5rem">
-          
             <Button h="1.75rem" size="sm" onClick={handleShow}>
               {show ? "Hide" : "Show"}
             </Button>
@@ -74,7 +185,7 @@ const Signup = () => {
       </FormControl>
 
       <FormControl id="pic">
-        <FormLabel>Upload Profile Pic</FormLabel>        
+        <FormLabel>Upload Profile Pic</FormLabel>
         <Input
           type="file"
           p={1.5}
@@ -88,6 +199,7 @@ const Signup = () => {
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
+        isLoading={loading}
       >
         Sign Up
       </Button>
