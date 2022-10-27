@@ -162,7 +162,11 @@ const Signup = () => {
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleShow}>
-              {show ? "Hide" : "Show"}
+            {show ? (
+                <i className="fas fa-eye-slash"></i>
+              ) : (
+                <i className="fas fa-eye"></i>
+              )}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -178,7 +182,11 @@ const Signup = () => {
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleShow}>
-              {show ? "Hide" : "Show"}
+            {show ? (
+                <i className="fas fa-eye-slash"></i>
+              ) : (
+                <i className="fas fa-eye"></i>
+              )}
             </Button>
           </InputRightElement>
         </InputGroup>

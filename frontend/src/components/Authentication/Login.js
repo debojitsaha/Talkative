@@ -17,6 +17,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  
   const toast = useToast();
   const history = useHistory();
 
@@ -92,7 +93,11 @@ const Login = () => {
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleShow}>
-              {show ? "Hide" : "Show"}
+              {show ? (
+                <i className="fas fa-eye-slash"></i>
+              ) : (
+                <i className="fas fa-eye"></i>
+              )}
             </Button>
           </InputRightElement>
         </InputGroup>
