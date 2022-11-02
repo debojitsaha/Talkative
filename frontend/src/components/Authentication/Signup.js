@@ -35,7 +35,7 @@ const Signup = () => {
       toast({
         title: "Please select an image",
         status: "warning",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
@@ -66,7 +66,7 @@ const Signup = () => {
       toast({
         title: "Please select an image",
         status: "warning",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
@@ -81,7 +81,7 @@ const Signup = () => {
       toast({
         title: "Please fill all the fields",
         status: "warning",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
@@ -93,7 +93,7 @@ const Signup = () => {
       toast({
         title: "Passwords do not match",
         status: "warning",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
@@ -116,7 +116,7 @@ const Signup = () => {
       toast({
         title: "Registration Successful",
         status: "success",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
@@ -130,7 +130,7 @@ const Signup = () => {
         title: "Error Occured",
         description: error.response.data.message,
         status: "error",
-        duration: 5000,
+        duration: 2000,
         isClosable: true,
         position: "bottom",
       });
