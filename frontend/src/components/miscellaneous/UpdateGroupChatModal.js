@@ -81,7 +81,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   };
 
   const handleAddUser = async (userToAdd) => {
-    console.log(selectedChat.users);
+    // console.log(selectedChat.users);
     if (selectedChat.users.find((u) => u._id === userToAdd._id)) {
       toast({
         title: "User already present",
@@ -123,7 +123,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       );
 
       setSelectedChat(data);
-      console.log(selectedChat.users);
+      // console.log(selectedChat.users);
       setFetchAgain(!fetchAgain);
       setLoading(false);
     } catch (error) {
