@@ -1,0 +1,7 @@
+.messages{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    /* background-color: #20f099b7; */
+}
