@@ -165,9 +165,10 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                   key={notif._id}
                   onClick={() => {
                     setSelectedChat(notif.chat);
-                    setNotification(notification.filter((n) => n !== notif));
+                    setNotification(notification.filter((n) => n.chat._id !== notif.chat._id));
                   }}
                 >
+                  {console.log(notification)}
                   {notif.chat.isGroupChat
                     ? `New message in ${notif.chat.chatName}`
                     : `New message from ${getSender(user, notif.chat.users)}`}
