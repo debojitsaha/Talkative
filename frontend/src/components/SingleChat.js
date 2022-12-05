@@ -92,6 +92,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     fetchMessages();
 
     selectedChatCompare = selectedChat;
+    // console.log(selectedChatCompare);
+    setNotification(notification.filter((n) => n.chat._id !== selectedChatCompare._id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
@@ -157,6 +159,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     if (!typing) {
       setTyping(true);
+      // console.log(selectedChat);
       socket.emit("typing", selectedChat._id);
     }
 
