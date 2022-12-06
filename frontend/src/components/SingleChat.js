@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   IconButton,
   Input,
@@ -18,13 +19,14 @@ import "./style.css";
 import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
 import Lottie from "react-lottie";
-import animationData from "../animations/typing.json" 
+import animationData from "../animations/typing.json";
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
-  const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState();
+  const { user, selectedChat, setSelectedChat, notification, setNotification } =
+    ChatState();
 
   const toast = useToast();
 
@@ -40,9 +42,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     autoplay: true,
     animationData: animationData,
     renderSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  }
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -93,7 +95,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     selectedChatCompare = selectedChat;
     // console.log(selectedChatCompare);
-    setNotification(notification.filter((n) => n.chat._id !== selectedChatCompare._id));
+    setNotification(
+      notification.filter((n) => n.chat._id !== selectedChatCompare._id)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChat]);
 
@@ -105,9 +109,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
-        if(!notification.includes(newMessageRecieved)){
-          setNotification([newMessageRecieved,...notification])
-          setFetchAgain(!fetchAgain)
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
         }
       } else {
         setMessages([...messages, newMessageRecieved]);
@@ -116,8 +120,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   });
 
   const sendMessage = async (e) => {
-    if (e.key === "Enter" && newMessage) {
-      socket.emit("stop typing", selectedChat._id)
+    // console.log(e);
+    if ((e.key === "Enter" || e.type === 'click') && newMessage) {
+      socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -235,21 +240,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat messages={messages} />
               </div>
             )}
-            <FormControl onKeyDown={sendMessage} mt={3} isRequired>
-              {isTyping ? <div>
-                <Lottie
-                options={defaultOptions}
-                width={70}
-                style={{marginBottom:15, marginLeft:0}}
-                   />
-              </div> : <></>}
+            <FormControl
+              onKeyDown={sendMessage}
+              mt={3}
+              isRequired              
+            >
+              {isTyping ? (
+                <div>
+                  <Lottie
+                    options={defaultOptions}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+              <Box display={"flex"}>
               <Input
                 variant="filled"
                 bg="#E0E0E0"
                 placeholder="Enter new message.."
                 value={newMessage}
                 onChange={typingHandler}
+                
               />
+              <Button
+                onClick={sendMessage}
+                mx={2}
+                bgColor="springgreen"
+                _hover={{ backgroundColor: "#36fa8e" }}
+              >
+                Send
+              </Button>
+              </Box>
             </FormControl>
           </Box>
         </>

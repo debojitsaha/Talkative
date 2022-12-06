@@ -141,12 +141,12 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
         <Tooltip label="Search user to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen}>
             <i className="fas fa-search"></i>
-            <Text display={{ base: "none", md: "flex" }} px="4">
+            <Text display={{ base: "none", md: "flex" }} px="4" fontSize="18px">
               Search User
             </Text>
           </Button>
         </Tooltip>
-        <Text fontFamily="Work sans" fontSize="2xl" fontWeight="bold">
+        <Text fontFamily="Work sans" fontSize="32px" fontWeight="bold">
           Talkative
         </Text>
         <div>
@@ -165,12 +165,15 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                   key={notif._id}
                   onClick={() => {
                     setSelectedChat(notif.chat);
-                    setNotification(notification.filter((n) => n.chat._id !== notif.chat._id));
+                    setNotification(
+                      notification.filter((n) => n.chat._id !== notif.chat._id)
+                    );
                   }}
-                >                  
+                >
+                  {/* {console.log(notif)} */}
                   {notif.chat.isGroupChat
                     ? `New message in ${notif.chat.chatName}`
-                    : `New message from ${getSender(user, notif.chat.users)}`}
+                    : `${getSender(user, notif.chat.users)} : ${notif.content}`}
                 </MenuItem>
               ))}
             </MenuList>

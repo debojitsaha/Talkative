@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
 import axios from "axios";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
-import { getSender } from "../config/ChatLogics";
+import { getChatUser, getSender } from "../config/ChatLogics";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
+import groupdefaultdp from "../assets/groupdefaultdp.png";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat } = ChatState();
   const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const toast = useToast();
 
   const fetchChats = async () => {
+    setLoading(true);
     try {
       const config = {
         headers: {
@@ -23,6 +26,7 @@ const MyChats = ({ fetchAgain }) => {
       };
       const { data } = await axios.get("/api/chat", config);
       setChats(data);
+      setLoading(false);
       // console.log(chats);
       // console.log(data);
       // console.log(chats);
@@ -69,7 +73,7 @@ const MyChats = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        My Chats
+        <Text fontWeight={"black"}>My Chats</Text>
         <GroupChatModal>
           <Button
             display="flex"
@@ -91,7 +95,7 @@ const MyChats = ({ fetchAgain }) => {
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+        {chats && !loading ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => (
               <Box
@@ -103,12 +107,38 @@ const MyChats = ({ fetchAgain }) => {
                 py={2}
                 borderRadius="lg"
                 key={chat._id}
+                display="flex"
               >
-                <Text>
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
-                </Text>
+                <Avatar
+                  my="2px"
+                  mr={2}
+                  name={
+                    !chat.isGroupChat
+                      ? getChatUser(loggedUser, chat.users).name
+                      : chat.chatName
+                  }
+                  src={
+                    !chat.isGroupChat
+                      ? getChatUser(loggedUser, chat.users).pic
+                      : groupdefaultdp
+                  }
+                />
+                <Box>
+                  <Text
+                    fontWeight={"medium"}
+                    fontSize={{ base: "18px", md: "20px" }}
+                  >
+                    {!chat.isGroupChat
+                      ? getSender(loggedUser, chat.users)
+                      : chat.chatName}
+                    {/* {console.log(chat)} */}
+                  </Text>
+                  <Text color={selectedChat === chat ? "#f1dfdf" : "#434242"}>
+                    {!chat.isGroupChat
+                      ? chat.latestMessage.content
+                      : `${chat.latestMessage.sender.name} : ${chat.latestMessage.content}`}
+                  </Text>
+                </Box>
               </Box>
             ))}
           </Stack>
