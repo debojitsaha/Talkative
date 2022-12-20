@@ -133,12 +133,13 @@ const MyChats = ({ fetchAgain, setFetchAgain }) => {
                       : chat.chatName}
                     {/* {console.log(chat)} */}
                   </Text>
-                  {chat.latestMessage &&
-                  <Text color={selectedChat === chat ? "#f1dfdf" : "#434242"}>
-                    {!chat.isGroupChat
-                      ? chat.latestMessage.content
-                      : `${chat.latestMessage.sender.name} : ${chat.latestMessage.content}`}
-                  </Text>}
+                  {chat.latestMessage && (
+                    <Text color={selectedChat === chat ? "#f1dfdf" : "#434242"}>
+                      {!chat.isGroupChat
+                        ? chat.latestMessage.content
+                        : `${chat.latestMessage.sender.name} : ${chat.latestMessage.content}`}
+                    </Text>
+                  )}
                 </Box>
               </Box>
             ))}

@@ -67,7 +67,7 @@ const GroupChatModal = ({ fetchAgain, setFetchAgain, children }) => {
       setLoading(false);
     }
   };
-  
+
   const handleSubmit = async () => {
     if (!groupChatName || !selectedUsers) {
       toast({
@@ -97,7 +97,7 @@ const GroupChatModal = ({ fetchAgain, setFetchAgain, children }) => {
       );
       setChats([data, ...chats]);
       onClose();
-      setFetchAgain(!fetchAgain)
+      setFetchAgain(!fetchAgain);
       toast({
         title: "New Group Chat Created",
         duration: 2000,
