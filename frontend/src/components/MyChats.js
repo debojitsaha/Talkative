@@ -8,7 +8,7 @@ import { getChatUser, getSender } from "../config/ChatLogics";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 import groupdefaultdp from "../assets/groupdefaultdp.png";
 
-const MyChats = ({ fetchAgain }) => {
+const MyChats = ({ fetchAgain, setFetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat } = ChatState();
   const [chats, setChats] = useState([]);
@@ -74,7 +74,7 @@ const MyChats = ({ fetchAgain }) => {
         alignItems="center"
       >
         <Text fontWeight={"black"}>My Chats</Text>
-        <GroupChatModal>
+        <GroupChatModal fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}>
           <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -133,11 +133,12 @@ const MyChats = ({ fetchAgain }) => {
                       : chat.chatName}
                     {/* {console.log(chat)} */}
                   </Text>
+                  {chat.latestMessage &&
                   <Text color={selectedChat === chat ? "#f1dfdf" : "#434242"}>
                     {!chat.isGroupChat
                       ? chat.latestMessage.content
                       : `${chat.latestMessage.sender.name} : ${chat.latestMessage.content}`}
-                  </Text>
+                  </Text>}
                 </Box>
               </Box>
             ))}

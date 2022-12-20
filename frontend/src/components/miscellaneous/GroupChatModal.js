@@ -20,7 +20,7 @@ import axios from "axios";
 import UserListItem from "../UserAvatar/UserListItem";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 
-const GroupChatModal = ({ children }) => {
+const GroupChatModal = ({ fetchAgain, setFetchAgain, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [groupChatName, setGroupChatName] = useState();
@@ -97,6 +97,7 @@ const GroupChatModal = ({ children }) => {
       );
       setChats([data, ...chats]);
       onClose();
+      setFetchAgain(!fetchAgain)
       toast({
         title: "New Group Chat Created",
         duration: 2000,
